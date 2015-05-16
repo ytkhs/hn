@@ -13,7 +13,6 @@ func getJSON(url string) io.ReadCloser {
 
 	client := new(http.Client)
 	response, err := client.Do(req)
-	//	defer response.Body.Close()
 
 	if err != nil {
 		log.Fatal(err)

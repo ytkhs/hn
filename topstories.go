@@ -55,6 +55,8 @@ func getTopIds() []int {
 
 	var data topStoryIds
 	err := json.NewDecoder(body).Decode(&data)
+	defer body.Close()
+
 	if err != nil {
 		log.Fatal(err)
 		os.Exit(1)
@@ -65,6 +67,7 @@ func getTopIds() []int {
 func getNews(id int) news {
 
 	body := getJSON(APIEndpoint + "item/" + strconv.Itoa(id) + ".json")
+	defer body.Close()
 
 	var data news
 	err := json.NewDecoder(body).Decode(&data)
