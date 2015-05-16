@@ -1,24 +1,24 @@
-= hn
+# hn
 
-== NAME
+## NAME
 
 hn - A Hacker News CLI reader
 
-== INSTALL
+## INSTALL
 
 `go get github.com/qube81/hn`
 
-== COMMANDS
+## COMMANDS
 
 `hn top [num]`
 
-=== EXAMPLE
+### EXAMPLE
 
-`hn top` // get 10 top stories(default)
-`hn top 30` // get 30 top stories(num option max = 500)
+    hn top // get 10 top stories(default)
+    hn top 30 // get 30 top stories(num option max = 500)
 
 if you use iTerm2, clicking URL with command(⌘) key opens the news in your browser.
 
-== AUTHOR
+## AUTHOR
 
 qube81
