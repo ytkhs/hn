@@ -5,29 +5,18 @@ import (
 	"os"
 )
 
-var Commands = []cli.Command{
-	commandHoge,
-}
-
-var commandHoge = cli.Command{
-	Name:  "hoge",
-	Usage: "function hoge",
-	Description: `
-    The quick brown fox jumps over the lazy dog
-    The quick brown fox jumps over the lazy dog
-    The quick brown fox jumps over the lazy dog
-`,
-	Action: doHoge,
-}
-
 func main() {
+	newApp().Run(os.Args)
+}
+
+func newApp() *cli.App {
+
 	app := cli.NewApp()
 	app.Name = "hn"
-	app.Usage = "sample cli app"
+	app.Version = Version
+	app.Authors = []cli.Author{{Name: "qube81"}}
+	app.Usage = "A Hacker News CLI reader"
 	app.Commands = Commands
-	app.Run(os.Args)
-}
 
-func doHoge(c *cli.Context) {
-	println("Hello, hn!")
+	return app
 }
