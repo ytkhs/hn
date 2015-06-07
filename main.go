@@ -3,9 +3,11 @@ package main
 import (
 	"github.com/codegangsta/cli"
 	"os"
+	"runtime"
 )
 
 func main() {
+	runtime.GOMAXPROCS(runtime.NumCPU())
 	newApp().Run(os.Args)
 }
 
