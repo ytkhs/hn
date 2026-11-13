@@ -6,7 +6,7 @@ hn - A Hacker News CLI reader
 
 ## INSTALL
 
-`go get github.com/qube81/hn`
+`go install github.com/ytkhs/hn@latest`
 
 ## COMMANDS
 
@@ -21,4 +21,4 @@ if you use iTerm2, clicking URL with command(⌘) key opens the news in your bro
 
 ## AUTHOR
 
-qube81
+ytkhs

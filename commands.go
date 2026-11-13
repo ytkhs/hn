@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/codegangsta/cli"
+	"github.com/urfave/cli"
 	"strconv"
 )
 
@@ -15,14 +15,14 @@ var commandTop = cli.Command{
 	Action: doTop,
 }
 
-func doTop(c *cli.Context) {
+func doTop(c *cli.Context) error {
 
 	num := 10
 
 	param, err := strconv.Atoi(c.Args().First())
-	if err == nil && param <= 500 {
+	if err == nil && param > 0 && param <= 500 {
 		num = param
 	}
 
-	getTopStories(num)
+	return getTopStories(num)
 }

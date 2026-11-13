@@ -2,35 +2,53 @@ package main
 
 import (
 	"fmt"
-	h "github.com/qube81/hackernews-api-go"
+	"os"
 	"time"
+
+	h "github.com/ytkhs/hackernews-api-go"
 )
 
-func getTopStories(num int) {
-	ids, _ := h.GetStories("top")
+type result struct {
+	story h.Story
+	err   error
+}
 
-	articleChan := make(chan h.Story)
-	target := ids[0:num]
+func getTopStories(num int) error {
+	ids, err := h.GetStories("top")
+	if err != nil {
+		return err
+	}
 
+	if num > len(ids) {
+		num = len(ids)
+	}
+	target := ids[:num]
+
+	results := make(chan result)
 	for _, id := range target {
 		go func(itemid int) {
-
-			article, _ := h.GetItem(itemid)
-			articleChan <- article
-
+			story, err := h.GetItem(itemid)
+			results <- result{story, err}
 		}(id)
 	}
 
 	fmt.Println("=== Hacker News Top Stories ===")
 	fmt.Println()
 
-	for i := 0; i < len(target); i++ {
-		if news := <-articleChan; !news.Deleted {
-			fmt.Println(time.Unix(news.Time, 0), "by", news.By)
-			fmt.Println("* ", news.Title)
-			fmt.Println("> ", news.URL)
-			fmt.Println()
+	for range target {
+		r := <-results
+		if r.err != nil {
+			fmt.Fprintln(os.Stderr, "skip:", r.err)
+			continue
 		}
+		if r.story.Deleted {
+			continue
+		}
+		fmt.Println(time.Unix(r.story.Time, 0), "by", r.story.By)
+		fmt.Println("* ", r.story.Title)
+		fmt.Println("> ", r.story.URL)
+		fmt.Println()
 	}
 
+	return nil
 }
