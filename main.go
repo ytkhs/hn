@@ -17,10 +17,13 @@ func main() {
 
 func newApp() *cli.Command {
 	return &cli.Command{
-		Name:     "hn",
-		Version:  Version,
-		Authors:  []any{"ytkhs"},
-		Usage:    "A Hacker News CLI reader",
-		Commands: Commands,
+		Name:      "hn",
+		Version:   Version,
+		Authors:   []any{"ytkhs"},
+		Usage:     "A Hacker News CLI reader",
+		UsageText: "hn [--json] [num]\nhn top [--json] [num]",
+		Flags:     topFlags(),
+		Action:    doTop,
+		Commands:  Commands,
 	}
 }

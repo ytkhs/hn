@@ -12,19 +12,27 @@ const (
 	maxNum     = 500
 )
 
+// runTop is a variable so tests can replace the network call.
+var runTop = getTopStories
+
 var Commands = []*cli.Command{
-	commandTop,
+	{
+		Name:      "top",
+		Usage:     "list Hacker News top stories (default command)",
+		ArgsUsage: "[num]",
+		Flags:     topFlags(),
+		Action:    doTop,
+	},
 }
 
-var commandTop = &cli.Command{
-	Name:      "top",
-	Usage:     "list Hacker News top stories",
-	ArgsUsage: "[num]",
-	Action:    doTop,
+func topFlags() []cli.Flag {
+	return []cli.Flag{
+		&cli.BoolFlag{Name: "json", Usage: "output stories as JSON"},
+	}
 }
 
 func doTop(ctx context.Context, cmd *cli.Command) error {
-	return getTopStories(parseNum(cmd.Args().First()))
+	return runTop(parseNum(cmd.Args().First()), cmd.Bool("json"))
 }
 
 func parseNum(arg string) int {
