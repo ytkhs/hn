@@ -1,28 +1,36 @@
 package main
 
 import (
-	"github.com/urfave/cli"
+	"context"
 	"strconv"
+
+	"github.com/urfave/cli/v3"
 )
 
-var Commands = []cli.Command{
+const (
+	defaultNum = 10
+	maxNum     = 500
+)
+
+var Commands = []*cli.Command{
 	commandTop,
 }
 
-var commandTop = cli.Command{
-	Name:   "top",
-	Usage:  "list Hacker News top stories",
-	Action: doTop,
+var commandTop = &cli.Command{
+	Name:      "top",
+	Usage:     "list Hacker News top stories",
+	ArgsUsage: "[num]",
+	Action:    doTop,
 }
 
-func doTop(c *cli.Context) error {
+func doTop(ctx context.Context, cmd *cli.Command) error {
+	return getTopStories(parseNum(cmd.Args().First()))
+}
 
-	num := 10
-
-	param, err := strconv.Atoi(c.Args().First())
-	if err == nil && param > 0 && param <= 500 {
-		num = param
+func parseNum(arg string) int {
+	n, err := strconv.Atoi(arg)
+	if err != nil || n <= 0 || n > maxNum {
+		return defaultNum
 	}
-
-	return getTopStories(num)
+	return n
 }

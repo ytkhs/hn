@@ -1,29 +1,26 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"os"
-	"runtime"
 
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v3"
 )
 
 func main() {
-	runtime.GOMAXPROCS(runtime.NumCPU())
-	if err := newApp().Run(os.Args); err != nil {
+	if err := newApp().Run(context.Background(), os.Args); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
 }
 
-func newApp() *cli.App {
-
-	app := cli.NewApp()
-	app.Name = "hn"
-	app.Version = Version
-	app.Authors = []cli.Author{{Name: "ytkhs"}}
-	app.Usage = "A Hacker News CLI reader"
-	app.Commands = Commands
-
-	return app
+func newApp() *cli.Command {
+	return &cli.Command{
+		Name:     "hn",
+		Version:  Version,
+		Authors:  []any{"ytkhs"},
+		Usage:    "A Hacker News CLI reader",
+		Commands: Commands,
+	}
 }
